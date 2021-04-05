@@ -14,6 +14,7 @@ from model import AlexNet
 
 def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # device = torch.device("cpu")
     print("using {} device.".format(device))
 
     data_transform = {
@@ -41,7 +42,8 @@ def main():
         json_file.write(json_str)
 
     batch_size = 32
-    nw = min([os.cpu_count(), batch_size if batch_size > 1 else 0, 8])  # number of workers
+    # nw = min([os.cpu_count(), batch_size if batch_size > 1 else 0, 8])  # number of workers
+    nw = 4
     print('Using {} dataloader workers every process'.format(nw))
 
     train_loader = torch.utils.data.DataLoader(train_dataset,
@@ -76,7 +78,7 @@ def main():
     # pata = list(net.parameters())
     optimizer = optim.Adam(net.parameters(), lr=0.0002)
 
-    epochs = 10
+    epochs = 20
     save_path = './AlexNet.pth'
     best_acc = 0.0
     train_steps = len(train_loader)
